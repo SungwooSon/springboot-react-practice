@@ -1,26 +1,56 @@
 package com.hanwhalife.poc.api.service;
 
+import com.hanwhalife.poc.api.domain.Age;
+import com.hanwhalife.poc.api.domain.Gender;
+import com.hanwhalife.poc.api.domain.LoginHistory;
+import com.hanwhalife.poc.api.domain.User;
+import com.hanwhalife.poc.api.dto.CreateUserDto;
 import com.hanwhalife.poc.api.dto.LoginDto;
 import com.hanwhalife.poc.api.exception.UserNotFoundException;
+import com.hanwhalife.poc.api.repository.LoginHistoryRepository;
 import com.hanwhalife.poc.api.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.time.LocalDateTime;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AuthService {
 
-    @Autowired
     private final UserRepository userRepository;
 
-    public void login(LoginDto loginDto) {
-        userRepository.findByEmailAndPassword(loginDto.getEmail(), loginDto.getPassword())
-                        .orElseThrow(UserNotFoundException::new);
+    private final LoginHistoryRepository loginHistoryRepository;
+
+    public void login(LoginDto loginDto, String loginIp) {
+        User user = userRepository.findByEmailAndPassword(loginDto.getEmail(), loginDto.getPassword())
+                                  .orElseThrow(UserNotFoundException::new);
 
         // 전체 회원을 다 뒤져서, loginDto와 일치하는 findFirst. 하는 방법도 있겠지
+        // 여기서... login 이력을 남긴다?
+
+        loginHistoryRepository.save(LoginHistory.builder()
+                                                .user(user)
+                                                .loginIp(loginIp)
+                                                .loginDateTime(LocalDateTime.now())
+                                                .build());
+    }
+
+    public void signUp(CreateUserDto request) {
+
+        //CreateUserDto -> User
+        User user = User.builder()
+                        .email(request.getEmail())
+                        .password(request.getPassword())
+                        .username(request.getUsername())
+                        .gender(Gender.getGenderByString(request.getGender()).orElseThrow()) // front에서 String으로 전달할텐데. String -> Gender 를 만들어주어야하는데
+                        .age(new Age(request.getAge())) // int -> Age
+                        //.age(Age::new)
+                        .build();
+
+        userRepository.save(user);
     }
 
 }

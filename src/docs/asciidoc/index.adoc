@@ -1,0 +1,45 @@
+
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+// ascii doc 기본문법 참고
+= 한화생명 POC API
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+= 로그인
+
+=== 요청
+include::{snippets}/authenticate/http-request.adoc[]
+
+include::{snippets}/authenticate/request-fields.adoc[]
+
+=== 응답
+include::{snippets}/authenticate/http-response.adoc[]
+
+= 공지
+
+== 공지사항 작성
+
+=== 요청
+include::{snippets}/notice-create/http-request.adoc[]
+
+include::{snippets}/notice-create/request-fields.adoc[]
+
+=== 응답
+include::{snippets}/notice-create/http-response.adoc[]
+
+== 공지사항 단건 조회
+
+=== 요청
+include::{snippets}/notice-inquiry/http-request.adoc[]
+
+include::{snippets}/notice-inquiry/request-fields.adoc[]
+
+=== 응답
+include::{snippets}/notice-inquiry/http-response.adoc[]
