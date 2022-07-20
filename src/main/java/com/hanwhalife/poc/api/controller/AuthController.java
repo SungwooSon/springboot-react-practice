@@ -2,6 +2,8 @@ package com.hanwhalife.poc.api.controller;
 
 import com.hanwhalife.poc.api.dto.CreateUserDto;
 import com.hanwhalife.poc.api.dto.LoginDto;
+import com.hanwhalife.poc.api.exception.UserNotFoundException;
+import com.hanwhalife.poc.api.response.AuthResponse;
 import com.hanwhalife.poc.api.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,12 +25,18 @@ public class AuthController {
     public void login(@RequestBody @Valid LoginDto userDto, HttpServletRequest request) throws IOException {
         //jwt 적용시 토큰 발급하는 부분.
         log.info("userDto={}", userDto);
-        log.info("loginIp={}", getRemoteAddr(request));
+        log.info("loginIp={}", getClientIP(request));
 
         // 이메일 형식 검증.
         // 패스워드 형식 검증.
         userDto.validate();
-        authService.login(userDto, getRemoteAddr(request));
+
+        try {
+            authService.login(userDto, getClientIP(request));
+
+        } catch (UserNotFoundException e) {
+
+        }
 
         // 실패시
         // 오류 응답 전달
@@ -46,8 +54,34 @@ public class AuthController {
     }
 
 
-    protected String getRemoteAddr(HttpServletRequest request){
-        return (null != request.getHeader("X-FORWARDED-FOR")) ? request.getHeader("X-FORWARDED-FOR") : request.getRemoteAddr();
+    private String getClientIP(HttpServletRequest request){
+
+        String ip = request.getHeader("X-Forwarded-For");
+        log.info("> X-FORWARDED-FOR : " + ip);
+
+        if (ip == null) {
+            ip = request.getHeader("Proxy-Client-IP");
+            log.info("> Proxy-Client-IP : " + ip);
+        }
+        if (ip == null) {
+            ip = request.getHeader("WL-Proxy-Client-IP");
+            log.info(">  WL-Proxy-Client-IP : " + ip);
+        }
+        if (ip == null) {
+            ip = request.getHeader("HTTP_CLIENT_IP");
+            log.info("> HTTP_CLIENT_IP : " + ip);
+        }
+        if (ip == null) {
+            ip = request.getHeader("HTTP_X_FORWARDED_FOR");
+            log.info("> HTTP_X_FORWARDED_FOR : " + ip);
+        }
+        if (ip == null) {
+            ip = request.getRemoteAddr();
+            log.info("> getRemoteAddr : "+ip);
+        }
+        log.info("> Result : IP Address : "+ip);
+
+        return ip;
     }
 
 }
