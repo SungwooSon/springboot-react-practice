@@ -9,9 +9,7 @@ import com.hanwhalife.poc.api.dto.LoginDto;
 import com.hanwhalife.poc.api.exception.UserNotFoundException;
 import com.hanwhalife.poc.api.repository.LoginHistoryRepository;
 import com.hanwhalife.poc.api.repository.UserRepository;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
