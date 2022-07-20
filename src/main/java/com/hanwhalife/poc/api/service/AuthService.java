@@ -28,9 +28,6 @@ public class AuthService {
         User user = userRepository.findByEmailAndPassword(loginDto.getEmail(), loginDto.getPassword())
                                   .orElseThrow(UserNotFoundException::new);
 
-        // 전체 회원을 다 뒤져서, loginDto와 일치하는 findFirst. 하는 방법도 있겠지
-        // 여기서... login 이력을 남긴다?
-
         loginHistoryRepository.save(LoginHistory.builder()
                                                 .user(user)
                                                 .loginIp(loginIp)

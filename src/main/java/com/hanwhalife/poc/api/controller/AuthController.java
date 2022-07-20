@@ -30,12 +30,8 @@ public class AuthController {
         // 패스워드 형식 검증.
         userDto.validate();
 
-        try {
-            authService.login(userDto, getClientIP(request));
+        authService.login(userDto, getClientIP(request));
 
-        } catch (UserNotFoundException e) {
-
-        }
 
         // 실패시
         // 오류 응답 전달
