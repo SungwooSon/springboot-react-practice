@@ -3,7 +3,6 @@ package com.hanwhalife.poc.api.controller;
 import com.hanwhalife.poc.api.dto.CreateUserDto;
 import com.hanwhalife.poc.api.dto.LoginDto;
 import com.hanwhalife.poc.api.exception.UserNotFoundException;
-import com.hanwhalife.poc.api.response.AuthResponse;
 import com.hanwhalife.poc.api.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
