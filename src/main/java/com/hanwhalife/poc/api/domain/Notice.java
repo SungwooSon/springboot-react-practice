@@ -1,7 +1,6 @@
 package com.hanwhalife.poc.api.domain;
 
 import lombok.*;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -10,12 +9,16 @@ import java.time.LocalDateTime;
 @Getter
 @Builder
 @AllArgsConstructor
-public class Notice {
+public class Notice extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String title;
+
+    @Lob
+    @Column(nullable = false)
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)

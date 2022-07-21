@@ -3,8 +3,6 @@ package com.hanwhalife.poc.api.domain;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name="users")
@@ -18,8 +16,13 @@ public class User {
     @Column(name = "user_id")
     private Long id;
 
+    @Column(nullable = false, length = 20)
     private String email;
+
+    @Column(nullable = false, length = 10)
     private String password;
+
+    @Column(nullable = false, length = 10)
     private String username;
 
     @Column(length = 1)
@@ -42,6 +45,5 @@ public class User {
     private Address address;
 
     //private Point point;
-
     //private Set<Authority> authorities = new HashSet<>();
 }
