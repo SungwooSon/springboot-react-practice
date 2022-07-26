@@ -26,9 +26,9 @@ public class UserServiceTest {
         UserResponse dto = list.get(0);
         assertThat(dto.getGender()).isEqualTo("남");
         assertThat(dto.getMarried()).isEqualTo("기혼");
-        assertThat(dto.getAgeGroup()).isEqualTo("30대");
+        assertThat(dto.getAgeGroup()).isEqualTo("20대");
         assertThat(dto.getJobGroup()).isEqualTo("사원");
-        assertThat(dto.getJobPosition()).isEqualTo("IT 개발/운영");
+        assertThat(dto.getJobPosition()).isEqualTo("경영");
         assertThat(dto.getAddress()).isEqualTo("서울시 강남구 대치동");
     }
 }

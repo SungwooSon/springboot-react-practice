@@ -1,11 +1,14 @@
 package com.hanwhalife.poc.api.controller;
 
+import com.hanwhalife.poc.api.domain.Notice;
 import com.hanwhalife.poc.api.dto.NoticeCreate;
+import com.hanwhalife.poc.api.dto.NoticeSpecification;
 import com.hanwhalife.poc.api.request.NoticeEdit;
 import com.hanwhalife.poc.api.response.NoticeResponse;
 import com.hanwhalife.poc.api.service.NoticeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -28,14 +31,21 @@ public class NoticeController {
 
 
     /**
-     * todo : paging, sorting, filtering
+     * todo : paging, sorting, filtering(title)
      *
      * @param
      * @return
      */
     @GetMapping
-    public List<NoticeResponse> getNoticeList() {
-        return noticeService.getList();
+    public List<NoticeResponse> getNoticeList(@RequestParam(required = false) String title) {
+
+        Specification<Notice> spec = (root, query, criteriaBuilder) -> null;
+
+        if (title != null) {
+            spec = spec.and(NoticeSpecification.likeTitle(title));
+        }
+
+        return noticeService.getList(spec);
     }
 
     @GetMapping("/{id}")

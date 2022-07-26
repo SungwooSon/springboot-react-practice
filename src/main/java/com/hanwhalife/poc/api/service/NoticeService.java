@@ -8,6 +8,7 @@ import com.hanwhalife.poc.api.repository.NoticeRepository;
 import com.hanwhalife.poc.api.repository.UserRepository;
 import com.hanwhalife.poc.api.response.NoticeResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -36,8 +37,8 @@ public class NoticeService {
                             .build();
     }
 
-    public List<NoticeResponse> getList() {
-        return noticeRepository.findAll().stream()
+    public List<NoticeResponse> getList(Specification<Notice> spec) {
+        return noticeRepository.findAll(spec).stream()
                 .map(NoticeResponse::new)
                 .collect(Collectors.toList());
     }
