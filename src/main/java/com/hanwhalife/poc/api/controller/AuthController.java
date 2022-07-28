@@ -2,7 +2,7 @@ package com.hanwhalife.poc.api.controller;
 
 import com.hanwhalife.poc.api.dto.CreateUserDto;
 import com.hanwhalife.poc.api.dto.LoginDto;
-import com.hanwhalife.poc.api.exception.UserNotFoundException;
+import com.hanwhalife.poc.api.response.AuthResponse;
 import com.hanwhalife.poc.api.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +21,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/authenticate")
-    public void login(@RequestBody @Valid LoginDto userDto, HttpServletRequest request) throws IOException {
+    public AuthResponse login(@RequestBody @Valid LoginDto userDto, HttpServletRequest request) {
         //jwt 적용시 토큰 발급하는 부분.
         log.info("userDto={}", userDto);
         log.info("loginIp={}", getClientIP(request));
@@ -32,7 +32,11 @@ public class AuthController {
 
         authService.login(userDto, getClientIP(request));
 
-
+        return AuthResponse.builder()
+                .code("200")
+                .message("로그인 성공했습니다")
+                .user(userDto)
+                .build();
         // 실패시
         // 오류 응답 전달
 
