@@ -1,0 +1,11 @@
+|===
+|Parameter|Optional|Description
+{{#parameters}}
+|{{#tableCellContent}}`+{{name}}+`{{/tableCellContent}}
+|{{#tableCellContent}}{{^optional}}true{{/optional}}{{#optional}}false{{/optional}}{{/tableCellContent}}
+|{{#tableCellContent}}{{description}}{{/tableCellContent}}
+{{/parameters}}
+|===
+
+//restdocs
+//라우팅 규칙을 잘 파싱해서 클라이언트에게 전달

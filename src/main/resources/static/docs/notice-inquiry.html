@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.10">
-<title>한화생명 POC API</title>
+<title>요청</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -440,46 +440,102 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="header">
 </div>
 <div id="content">
-<h1 id="_한화생명_poc_api" class="sect0">한화생명 POC API</h1>
-<div class="sect1">
-<h2 id="_인증"><a class="link" href="#_인증">인증</a></h2>
-<div class="sectionbody">
-<div class="sect2">
-<h3 id="_로그인"><a class="link" href="#_로그인">로그인</a></h3>
-<div class="paragraph">
-<p>Unresolved directive in index.adoc - include::login.adoc[]</p>
+<div class="sect3">
+<h4 id="_요청">요청</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /api/notices/1 HTTP/1.1
+Accept: application/json
+Host: 49.50.161.209:8080</code></pre>
 </div>
 </div>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. /api/notices/{id}</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">공지사항 ID</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_응답">응답</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Content-Length: 121
+
+{
+  "id" : 1,
+  "title" : "제목1",
+  "content" : "내용1",
+  "writer" : "ADMIN",
+  "registrationDate" : "2022-07-28"
+}</code></pre>
 </div>
 </div>
-<div class="sect1">
-<h2 id="_공지"><a class="link" href="#_공지">공지</a></h2>
-<div class="sectionbody">
-<div class="sect2">
-<h3 id="_공지사항_작성"><a class="link" href="#_공지사항_작성">공지사항 작성</a></h3>
-<div class="paragraph">
-<p>Unresolved directive in index.adoc - include::notice-create.adoc[]</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_공지사항_단건_조회"><a class="link" href="#_공지사항_단건_조회">공지사항 단건 조회</a></h3>
-<div class="paragraph">
-<p>Unresolved directive in index.adoc - include::notice-inquiry.adoc[]</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_공지사항_리스트_조회"><a class="link" href="#_공지사항_리스트_조회">공지사항 리스트 조회</a></h3>
-<div class="paragraph">
-<p>Unresolved directive in index.adoc - include::notice-list-inquiry.adoc[]</p>
-</div>
-</div>
-</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">공지사항 ID</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>title</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">제목</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">내용</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>writer</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작성자 ID</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>registrationDate</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">작성일자</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-07-27 14:34:42 +0900
+Last updated 2022-07-27 14:34:17 +0900
 </div>
 </div>
 </body>

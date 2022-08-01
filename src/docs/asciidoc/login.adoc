@@ -1,0 +1,8 @@
+
+==== 요청
+include::{snippets}/authenticate/http-request.adoc[]
+
+include::{snippets}/authenticate/request-fields.adoc[]
+
+==== 응답
+include::{snippets}/authenticate/http-response.adoc[]

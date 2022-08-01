@@ -6,6 +6,7 @@ import com.hanwhalife.poc.api.exception.NoticeNotFound;
 import com.hanwhalife.poc.api.exception.UserNotFoundException;
 import com.hanwhalife.poc.api.repository.NoticeRepository;
 import com.hanwhalife.poc.api.repository.UserRepository;
+import com.hanwhalife.poc.api.request.NoticeEdit;
 import com.hanwhalife.poc.api.response.NoticeResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
@@ -32,7 +33,7 @@ public class NoticeService {
                             .id(notice.getId())
                             .title(notice.getTitle())
                             .content(notice.getContent())
-                            .registerDate(notice.getRegisterDate().format(DateTimeFormatter.ISO_DATE))
+                            .registrationDate(notice.getRegistrationDate().format(DateTimeFormatter.ISO_DATE))
                             .writer(notice.getWriter().getUsername())
                             .build();
     }
@@ -49,11 +50,32 @@ public class NoticeService {
         Notice notice = Notice.builder()
                 .title(noticeCreate.getTitle())
                 .content(noticeCreate.getContent())
-                .registerDate(LocalDateTime.now())
+                .registrationDate(LocalDateTime.now())
                 .writer(userRepository.findById(noticeCreate.getUserId())
                         .orElseThrow(UserNotFoundException::new))
                 .build();
 
         noticeRepository.save(notice);
+    }
+
+    public void edit(Long id, NoticeEdit postEdit) {
+        Notice notice = noticeRepository.findById(id)
+                .orElseThrow(NoticeNotFound::new);
+
+        //PostEditor po
+
+        //notice.edit();
+
+        noticeRepository.save(notice);
+    }
+
+
+    public void delete(Long id) {
+
+        Notice notice = noticeRepository.findById(id)
+                .orElseThrow(NoticeNotFound::new);
+
+        noticeRepository.delete(notice);
+
     }
 }

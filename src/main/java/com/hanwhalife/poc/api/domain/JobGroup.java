@@ -15,4 +15,5 @@ public enum JobGroup {
     JobGroup(String krCode) {
         this.krCode = krCode;
     }
+
 }

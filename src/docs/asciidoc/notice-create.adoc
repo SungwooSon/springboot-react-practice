@@ -1,0 +1,7 @@
+
+==== 요청
+include::{snippets}/notice-create/http-request.adoc[]
+include::{snippets}/notice-create/request-fields.adoc[]
+
+==== 응답
+include::{snippets}/notice-create/http-response.adoc[]

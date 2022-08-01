@@ -9,6 +9,7 @@ import com.hanwhalife.poc.api.service.NoticeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -37,12 +38,12 @@ public class NoticeController {
      * @return
      */
     @GetMapping
-    public List<NoticeResponse> getNoticeList(@RequestParam(required = false) String title) {
+    public List<NoticeResponse> getNoticeList(@RequestParam(required = false) String keyword) {
 
         Specification<Notice> spec = (root, query, criteriaBuilder) -> null;
 
-        if (title != null) {
-            spec = spec.and(NoticeSpecification.likeTitle(title));
+        if (StringUtils.hasText(keyword)) {
+            spec = spec.and(NoticeSpecification.likeKeyword(keyword));
         }
 
         return noticeService.getList(spec);
@@ -60,6 +61,6 @@ public class NoticeController {
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
-
+        noticeService.delete(id);
     }
 }

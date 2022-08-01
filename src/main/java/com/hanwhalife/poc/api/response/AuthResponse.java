@@ -7,10 +7,8 @@ import lombok.Getter;
 @Builder
 @Getter
 public class AuthResponse {
-
     private String code;
     private String message;
 
     private LoginDto user;
-
 }

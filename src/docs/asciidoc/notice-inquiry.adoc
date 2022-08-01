@@ -1,0 +1,8 @@
+
+==== 요청
+include::{snippets}/notice-inquiry/http-request.adoc[]
+include::{snippets}/notice-inquiry/path-parameters.adoc[]
+
+==== 응답
+include::{snippets}/notice-inquiry/http-response.adoc[]
+include::{snippets}/notice-inquiry/response-fields.adoc[]

@@ -17,6 +17,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class NoticeServiceTest {
 
     @Autowired
+    NoticeService noticeService;
+
+    @Autowired
     NoticeRepository noticeRepository;
 
     @Autowired
@@ -29,7 +32,7 @@ public class NoticeServiceTest {
                 .title("제목")
                 .content("내용")
                 .writer(userRepository.findById(1l).get())
-                .registerDate(LocalDateTime.now())
+                .registrationDate(LocalDateTime.now())
                 .build();
 
         noticeRepository.save(notice);
@@ -41,4 +44,16 @@ public class NoticeServiceTest {
         assertThat(notice.getCreateAt().getDayOfMonth()).isEqualTo(LocalDateTime.now().getDayOfMonth());
     }
 
+
+    @Test
+    void deleteTest() {
+        //given
+        //noticeRepository.findById(1l);
+
+        //when
+        noticeService.delete(1l);
+
+        //then
+        Assertions.assertThat(noticeRepository.count()).isEqualTo(2);
+    }
 }

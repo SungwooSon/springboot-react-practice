@@ -15,15 +15,15 @@ public class NoticeResponse {
     private final String title;
     private final String content;
     private final String writer;
-    private final String registerDate;
+    private final String registrationDate;
 
     @Builder
-    public NoticeResponse(Long id, String title, String content, String writer, String registerDate) {
+    public NoticeResponse(Long id, String title, String content, String writer, String registrationDate) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.writer = writer;
-        this.registerDate = registerDate;
+        this.registrationDate = registrationDate;
     }
 
     public NoticeResponse(Notice notice) {
@@ -31,6 +31,6 @@ public class NoticeResponse {
         this.title = notice.getTitle();
         this.content = notice.getContent();
         this.writer = notice.getWriter().getUsername();
-        this.registerDate = notice.getRegisterDate().format(DateTimeFormatter.ISO_DATE);
+        this.registrationDate = notice.getRegistrationDate().format(DateTimeFormatter.ISO_DATE);
     }
 }

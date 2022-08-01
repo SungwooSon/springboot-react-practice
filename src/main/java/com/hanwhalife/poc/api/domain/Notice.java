@@ -25,5 +25,5 @@ public class Notice extends BaseEntity {
     @JoinColumn(name = "user_id")
     private User writer;
 
-    private LocalDateTime registerDate;
+    private LocalDateTime registrationDate;
 }
