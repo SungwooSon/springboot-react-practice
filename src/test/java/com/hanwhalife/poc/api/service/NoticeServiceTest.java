@@ -3,7 +3,6 @@ package com.hanwhalife.poc.api.service;
 import com.hanwhalife.poc.api.domain.Notice;
 import com.hanwhalife.poc.api.repository.NoticeRepository;
 import com.hanwhalife.poc.api.repository.UserRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,18 +41,5 @@ public class NoticeServiceTest {
         assertThat(notice.getCreateAt().getYear()).isEqualTo(LocalDateTime.now().getYear());
         assertThat(notice.getCreateAt().getMonth()).isEqualTo(LocalDateTime.now().getMonth());
         assertThat(notice.getCreateAt().getDayOfMonth()).isEqualTo(LocalDateTime.now().getDayOfMonth());
-    }
-
-
-    @Test
-    void deleteTest() {
-        //given
-        //noticeRepository.findById(1l);
-
-        //when
-        noticeService.delete(1l);
-
-        //then
-        Assertions.assertThat(noticeRepository.count()).isEqualTo(2);
     }
 }
