@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -24,6 +25,7 @@ public class NoticeService {
     private final NoticeRepository noticeRepository;
     private final UserRepository userRepository;
 
+    @Transactional
     public NoticeResponse get(Long id) {
 
         Notice notice = noticeRepository.findById(id)
@@ -38,6 +40,7 @@ public class NoticeService {
                             .build();
     }
 
+    @Transactional
     public List<NoticeResponse> getList(Specification<Notice> spec) {
         return noticeRepository.findAll(spec).stream()
                 .map(NoticeResponse::new)
