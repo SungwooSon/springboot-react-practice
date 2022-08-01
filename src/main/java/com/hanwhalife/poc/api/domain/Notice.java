@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @Getter
 @Builder
 @AllArgsConstructor
+@ToString
 public class Notice extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

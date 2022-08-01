@@ -9,6 +9,7 @@ import com.hanwhalife.poc.api.repository.UserRepository;
 import com.hanwhalife.poc.api.request.NoticeEdit;
 import com.hanwhalife.poc.api.response.NoticeResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class NoticeService {
@@ -30,6 +32,8 @@ public class NoticeService {
 
         Notice notice = noticeRepository.findById(id)
                 .orElseThrow(NoticeNotFound::new);
+
+        log.info("notice={}", notice);
 
         return NoticeResponse.builder()
                             .id(notice.getId())
