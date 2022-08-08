@@ -1,15 +1,21 @@
 package com.hanwhalife.poc.api.service;
 
 import com.hanwhalife.poc.api.domain.Notice;
+import com.hanwhalife.poc.api.domain.User;
 import com.hanwhalife.poc.api.repository.NoticeRepository;
 import com.hanwhalife.poc.api.repository.UserRepository;
 import com.hanwhalife.poc.api.request.NoticeEdit;
+import com.hanwhalife.poc.api.request.NoticeSearch;
+import com.hanwhalife.poc.api.response.NoticeResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -43,6 +49,36 @@ public class NoticeServiceTest {
         assertThat(notice.getCreateAt().getMonth()).isEqualTo(LocalDateTime.now().getMonth());
         assertThat(notice.getCreateAt().getDayOfMonth()).isEqualTo(LocalDateTime.now().getDayOfMonth());
     }
+
+    @Test
+    @DisplayName("페이징 처리된 목록 조회")
+    public void test2() {
+
+        User user = userRepository.findById(1l).get();
+
+        List<Notice> requestNotices = IntStream.range(0, 30)
+                        .mapToObj(i -> Notice.builder()
+                                .title("foo"+i)
+                                .content("bar"+i)
+                                .writer(user)
+                                .registrationDate(LocalDateTime.now())
+                                .build())
+                        .collect(Collectors.toList());
+        noticeRepository.saveAll(requestNotices);
+
+        //PageRequest pageRequest = PageRequest.of(0, 5);
+        NoticeSearch noticeSearch = NoticeSearch.builder()
+                .size(10)
+                .page(1)
+                .build();
+
+
+        List<NoticeResponse> notices = noticeService.getList(null, noticeSearch);
+
+        assertThat(notices.size()).isEqualTo(10);
+
+    }
+
 
     @Test
     void edit() {

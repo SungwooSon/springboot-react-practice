@@ -1,9 +1,11 @@
 package com.hanwhalife.poc.api.controller;
 
 import com.hanwhalife.poc.api.domain.Notice;
+import com.hanwhalife.poc.api.request.DeleteIds;
 import com.hanwhalife.poc.api.request.NoticeCreate;
 import com.hanwhalife.poc.api.dto.NoticeSpecification;
 import com.hanwhalife.poc.api.request.NoticeEdit;
+import com.hanwhalife.poc.api.request.NoticeSearch;
 import com.hanwhalife.poc.api.response.NoticeResponse;
 import com.hanwhalife.poc.api.service.NoticeService;
 import lombok.RequiredArgsConstructor;
@@ -38,7 +40,7 @@ public class NoticeController {
      * @return
      */
     @GetMapping
-    public List<NoticeResponse> getNoticeList(@RequestParam(required = false) String keyword) {
+    public List<NoticeResponse> getNoticeList(@RequestParam(required = false) String keyword, @RequestParam NoticeSearch noticeSearch) {
 
         Specification<Notice> spec = (root, query, criteriaBuilder) -> null;
 
@@ -46,7 +48,7 @@ public class NoticeController {
             spec = spec.and(NoticeSpecification.likeKeyword(keyword));
         }
 
-        return noticeService.getList(spec);
+        return noticeService.getList(spec, noticeSearch);
     }
 
     @GetMapping("/{id}")
@@ -59,8 +61,11 @@ public class NoticeController {
         noticeService.edit(id, noticeEdit);
     }
 
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        noticeService.delete(id);
+    @DeleteMapping
+    //public void delete(@PathVariable Long id) {
+    public void delete(@RequestBody DeleteIds ids) {
+        for (Long id : ids.getIds()) {
+            noticeService.delete(id);
+        }
     }
 }

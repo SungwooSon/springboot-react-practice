@@ -6,3 +6,4 @@ INSERT INTO USERS (email, password, username, age, gender, married, job_group, j
 INSERT INTO NOTICE (title, content, user_id, registration_date) values ('제목1', '내용1', 1, now());
 INSERT INTO NOTICE (title, content, user_id, registration_date) values ('제목2', '내용2', 2, now());
 INSERT INTO NOTICE (title, content, user_id, registration_date) values ('title', 'content', 3, now());
+INSERT INTO NOTICE (title, content, user_id, registration_date) values ('title2', 'content2', 1, now());

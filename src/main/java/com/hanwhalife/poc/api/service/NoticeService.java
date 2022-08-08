@@ -8,6 +8,7 @@ import com.hanwhalife.poc.api.repository.NoticeRepository;
 import com.hanwhalife.poc.api.repository.UserRepository;
 import com.hanwhalife.poc.api.request.NoticeCreate;
 import com.hanwhalife.poc.api.request.NoticeEdit;
+import com.hanwhalife.poc.api.request.NoticeSearch;
 import com.hanwhalife.poc.api.response.NoticeResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,8 +48,12 @@ public class NoticeService {
     }
 
     @Transactional
-    public List<NoticeResponse> getList(Specification<Notice> spec) {
-        return noticeRepository.findAll(spec).stream()
+    public List<NoticeResponse> getList(Specification<Notice> spec, NoticeSearch noticeSearch) {
+        /*return noticeRepository.findAll(spec).stream()
+                .map(NoticeResponse::new)
+                .collect(Collectors.toList());*/
+
+        return noticeRepository.getList(noticeSearch).stream()
                 .map(NoticeResponse::new)
                 .collect(Collectors.toList());
     }
@@ -116,6 +122,8 @@ public class NoticeService {
 
         Notice notice = noticeRepository.findById(id)
                 .orElseThrow(NoticeNotFound::new);
+
+        List<Long> ids = new ArrayList<>();
 
         noticeRepository.delete(notice);
 
