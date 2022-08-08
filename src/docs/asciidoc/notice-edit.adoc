@@ -1,0 +1,6 @@
+==== 요청
+include::{snippets}/notice-edit/http-request.adoc[]
+include::{snippets}/notice-edit/path-parameters.adoc[]
+include::{snippets}/notice-edit/request-fields.adoc[]
+==== 응답
+include::{snippets}/notice-edit/http-response.adoc[]

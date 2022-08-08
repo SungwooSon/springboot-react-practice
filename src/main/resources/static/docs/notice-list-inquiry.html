@@ -444,7 +444,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h4 id="_요청">요청</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /api/notices?keyword=%EC%A0%9C%EB%AA%A9 HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /api/notices?keyword=title HTTP/1.1
 Accept: application/json
 Host: 49.50.161.209:8080</code></pre>
 </div>
@@ -478,20 +478,20 @@ Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Content-Length: 252
+Content-Length: 250
 
 [ {
-  "id" : 1,
-  "title" : "제목1",
-  "content" : "내용1",
-  "writer" : "ADMIN",
-  "registrationDate" : "2022-07-28"
+  "id" : 3,
+  "title" : "title",
+  "content" : "content",
+  "writer" : "한새싹",
+  "registrationDate" : "2022-08-08"
 }, {
-  "id" : 2,
-  "title" : "제목2",
-  "content" : "내용2",
-  "writer" : "손성우",
-  "registrationDate" : "2022-07-28"
+  "id" : 4,
+  "title" : "title2",
+  "content" : "content2",
+  "writer" : "ADMIN",
+  "registrationDate" : "2022-08-08"
 } ]</code></pre>
 </div>
 </div>
