@@ -1,4 +1,4 @@
-package com.hanwhalife.poc.api.dto;
+package com.hanwhalife.poc.api.request;
 
 import lombok.Builder;
 import lombok.Getter;

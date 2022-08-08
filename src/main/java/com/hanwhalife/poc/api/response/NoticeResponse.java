@@ -1,7 +1,7 @@
 package com.hanwhalife.poc.api.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.hanwhalife.poc.api.domain.Notice;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -9,6 +9,7 @@ import java.time.format.DateTimeFormatter;
 
 
 @Getter
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class NoticeResponse {
 
     private final Long id;

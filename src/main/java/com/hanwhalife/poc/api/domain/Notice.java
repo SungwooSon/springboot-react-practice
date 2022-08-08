@@ -19,7 +19,7 @@ public class Notice extends BaseEntity {
     private String title;
 
     @Lob
-    @Column(nullable = false)
+    //@Column(nullable = false)
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -27,4 +27,21 @@ public class Notice extends BaseEntity {
     private User writer;
 
     private LocalDateTime registrationDate;
+
+    @Builder
+    public Notice(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
+
+    public NoticeEditor.NoticeEditorBuilder toEditor() {
+        return NoticeEditor.builder()
+                .title(title)
+                .content(content);
+    }
+
+    public void edit(NoticeEditor noticeEditor) {
+        title = noticeEditor.getTitle();
+        content = noticeEditor.getContent();
+    }
 }

@@ -1,7 +1,7 @@
 package com.hanwhalife.poc.api.controller;
 
 import com.hanwhalife.poc.api.domain.Notice;
-import com.hanwhalife.poc.api.dto.NoticeCreate;
+import com.hanwhalife.poc.api.request.NoticeCreate;
 import com.hanwhalife.poc.api.dto.NoticeSpecification;
 import com.hanwhalife.poc.api.request.NoticeEdit;
 import com.hanwhalife.poc.api.response.NoticeResponse;
@@ -24,10 +24,10 @@ public class NoticeController {
     private final NoticeService noticeService;
 
     @PostMapping
-    public void save(@RequestBody @Valid NoticeCreate request) {
+    public NoticeResponse save(@RequestBody @Valid NoticeCreate request) {
         //request.validate();
 
-        noticeService.save(request);
+        return noticeService.save(request);
     }
 
 
@@ -56,7 +56,7 @@ public class NoticeController {
 
     @PatchMapping("/{id}")
     public void update(@PathVariable Long id, @RequestBody @Valid NoticeEdit noticeEdit) {
-
+        noticeService.edit(id, noticeEdit);
     }
 
     @DeleteMapping("/{id}")

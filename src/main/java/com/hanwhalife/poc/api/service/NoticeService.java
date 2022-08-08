@@ -1,11 +1,12 @@
 package com.hanwhalife.poc.api.service;
 
 import com.hanwhalife.poc.api.domain.Notice;
-import com.hanwhalife.poc.api.dto.NoticeCreate;
+import com.hanwhalife.poc.api.domain.NoticeEditor;
 import com.hanwhalife.poc.api.exception.NoticeNotFound;
 import com.hanwhalife.poc.api.exception.UserNotFoundException;
 import com.hanwhalife.poc.api.repository.NoticeRepository;
 import com.hanwhalife.poc.api.repository.UserRepository;
+import com.hanwhalife.poc.api.request.NoticeCreate;
 import com.hanwhalife.poc.api.request.NoticeEdit;
 import com.hanwhalife.poc.api.response.NoticeResponse;
 import lombok.RequiredArgsConstructor;
@@ -51,7 +52,7 @@ public class NoticeService {
                 .collect(Collectors.toList());
     }
 
-    public void save(NoticeCreate noticeCreate) {
+    public NoticeResponse save(NoticeCreate noticeCreate) {
         //-> noticeCreate -> Notice -|<  -|0-
 
         Notice notice = Notice.builder()
@@ -63,17 +64,51 @@ public class NoticeService {
                 .build();
 
         noticeRepository.save(notice);
+
+        return NoticeResponse.builder()
+                .id(notice.getId())
+                .build();
     }
 
-    public void edit(Long id, NoticeEdit postEdit) {
+
+    @Transactional
+    public void edit(Long id, NoticeEdit noticeEdit) {
         Notice notice = noticeRepository.findById(id)
                 .orElseThrow(NoticeNotFound::new);
 
-        //PostEditor po
+        //Notice 에 setter 달기 껄끄러움.
+        //notice.setTitle(noticeEdit.getTitle());
+        //notice.setContent(noticeEdit.getContent());
 
-        //notice.edit();
+        //parameter 로 넘기는 방식이 순서가 바뀌는 경우 버그를 발견하기 힘들고, 전달인자 타입 변환, 숫자 증가 등 이슈에 취약하다.
+        //notice.change(noticeEdit.getTitle(), noticeEdit.getContent());
 
-        noticeRepository.save(notice);
+
+
+        NoticeEditor.NoticeEditorBuilder editorBuilder = notice.toEditor();
+
+        /* 프론트에서 수정할 데이터만 넘길경우.
+        if(noticeEdit.getTitle() != null) {
+            editorBuilder.title(noticeEdit.getTitle());
+        }
+
+        if(noticeEdit.getContent() != null) {
+            editorBuilder.content(noticeEdit.getContent());
+        }
+
+        NoticeEditor noticeEditor = editorBuilder.build();
+        */
+
+        NoticeEditor noticeEditor = editorBuilder
+                .title(noticeEdit.getTitle())
+                .content(noticeEdit.getContent())
+                .build();
+
+        //전달인자를 하나만 넘기고
+        //NoticeEditor에 있는 필드만 수정가능함을 코드로 알수 있음.
+        notice.edit(noticeEditor);
+
+        //noticeRepository.save(notice);
     }
 
 

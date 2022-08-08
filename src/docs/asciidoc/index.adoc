@@ -15,15 +15,65 @@ endif::[]
 == 인증
 
 === 로그인
-include::login.adoc[]
+//include::login.adoc[]
+
+==== 요청
+include::{snippets}/authenticate/http-request.adoc[]
+
+include::{snippets}/authenticate/request-fields.adoc[]
+
+==== 응답
+include::{snippets}/authenticate/http-response.adoc[]
 
 == 공지
 
 === 공지사항 작성
-include::notice-create.adoc[]
+//include::notice-create.adoc[]
+
+==== 요청
+include::{snippets}/notice-create/http-request.adoc[]
+include::{snippets}/notice-create/request-fields.adoc[]
+
+==== 응답
+include::{snippets}/notice-create/http-response.adoc[]
 
 === 공지사항 단건 조회
-include::notice-inquiry.adoc[]
+//include::notice-inquiry.adoc[]
+
+==== 요청
+include::{snippets}/notice-inquiry/http-request.adoc[]
+include::{snippets}/notice-inquiry/path-parameters.adoc[]
+
+==== 응답
+include::{snippets}/notice-inquiry/http-response.adoc[]
+include::{snippets}/notice-inquiry/response-fields.adoc[]
 
 === 공지사항 리스트 조회
-include::notice-list-inquiry.adoc[]
+//include::notice-list-inquiry.adoc[]
+
+==== 요청
+include::{snippets}/notice-list-inquiry/http-request.adoc[]
+include::{snippets}/notice-list-inquiry/request-parameters.adoc[]
+
+==== 응답
+include::{snippets}/notice-list-inquiry/http-response.adoc[]
+include::{snippets}/notice-list-inquiry/response-fields.adoc[]
+
+=== 공지사항 수정
+//include::notice-edit.adoc[]
+==== 요청
+include::{snippets}/notice-edit/http-request.adoc[]
+include::{snippets}/notice-edit/path-parameters.adoc[]
+include::{snippets}/notice-edit/request-fields.adoc[]
+==== 응답
+include::{snippets}/notice-edit/http-response.adoc[]
+
+
+=== 공지사항 삭제
+//include::notice-delete.adoc[]
+==== 요청
+include::{snippets}/notice-delete/http-request.adoc[]
+include::{snippets}/notice-delete/path-parameters.adoc[]
+
+==== 응답
+include::{snippets}/notice-delete/http-response.adoc[]
