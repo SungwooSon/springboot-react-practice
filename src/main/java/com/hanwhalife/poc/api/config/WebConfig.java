@@ -1,6 +1,7 @@
 package com.hanwhalife.poc.api.config;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -9,6 +10,15 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
+                .allowedOrigins("*")
+                .allowedMethods(
+                        HttpMethod.GET.name(),
+                        HttpMethod.HEAD.name(),
+                        HttpMethod.POST.name(),
+                        HttpMethod.PUT.name(),
+                        HttpMethod.DELETE.name(),
+                        HttpMethod.OPTIONS.name()
+                );
 //                .allowedOrigins("http://localhost:3000"
 //                               ,"http://localhost:3001"
 //                               ,"http://192.168.0.17:3000"    //
@@ -17,6 +27,6 @@ public class WebConfig implements WebMvcConfigurer {
 //                               ,"http://211.215.6.105:3001"   // 새싹 집 ip
 //                                );
 //                                //하나씩 다 입력해줘야되? 이건 아니지..
-                .allowedOrigins("*");
+
     }
 }
