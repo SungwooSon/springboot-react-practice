@@ -2,10 +2,12 @@ package com.hanwhalife.poc.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hanwhalife.poc.api.domain.Notice;
+import com.hanwhalife.poc.api.domain.User;
 import com.hanwhalife.poc.api.repository.NoticeRepository;
 import com.hanwhalife.poc.api.repository.UserRepository;
 import com.hanwhalife.poc.api.request.NoticeEdit;
 import com.hanwhalife.poc.api.service.NoticeService;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,13 +15,19 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -38,6 +46,59 @@ public class NoticeControllerTest {
     @Autowired NoticeRepository noticeRepository;
     @Autowired
     NoticeService noticeService;
+
+    @Test
+    @DisplayName("게시글 리스트 조회")
+    void noticeList() throws Exception {
+
+        User user = userRepository.findById(1l).get();
+
+        List<Notice> requestNotices = IntStream.range(0, 30)
+                .mapToObj(i -> Notice.builder()
+                        .title("foo"+i)
+                        .content("bar"+i)
+                        .writer(user)
+                        .registrationDate(LocalDateTime.now())
+                        .build())
+                .collect(Collectors.toList());
+        noticeRepository.saveAll(requestNotices);
+
+        mockMvc.perform(
+                        MockMvcRequestBuilders.get("/api/notices?page=1&size=20")
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$.length()", Matchers.is(20)))
+                .andExpect(jsonPath("$[0].title").value("foo29"))
+                .andExpect(jsonPath("$[0].content").value("bar29"))
+                .andDo(print());
+    }
+    @Test
+    @DisplayName("게시글 리스트 조회- 페이지 0으로 조회")
+    void noticeList2() throws Exception {
+
+        User user = userRepository.findById(1l).get();
+
+        List<Notice> requestNotices = IntStream.range(0, 30)
+                .mapToObj(i -> Notice.builder()
+                        .title("foo"+i)
+                        .content("bar"+i)
+                        .writer(user)
+                        .registrationDate(LocalDateTime.now())
+                        .build())
+                .collect(Collectors.toList());
+        noticeRepository.saveAll(requestNotices);
+
+        mockMvc.perform(
+                        MockMvcRequestBuilders.get("/api/notices?page=0&size=20")
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("$.length()", Matchers.is(20)))
+                .andExpect(jsonPath("$[0].title").value("foo29"))
+                .andExpect(jsonPath("$[0].content").value("bar29"))
+                .andDo(print());
+    }
 
     @Test
     @DisplayName("게시글 삭제")

@@ -18,7 +18,7 @@ public class NoticeRepositoryImpl implements NoticeRepositoryCustom{
     public List<Notice> getList(NoticeSearch noticeSearch) {
         return jpaQueryFactory.selectFrom(notice)
                 .limit(noticeSearch.getSize())
-                .offset((long)(noticeSearch.getPage() - 1) * noticeSearch.getSize())
+                .offset(noticeSearch.getOffset())
                 .orderBy(notice.id.desc())
                 .fetch();
     }

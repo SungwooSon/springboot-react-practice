@@ -68,7 +68,7 @@ public class NoticeServiceTest {
 
         //PageRequest pageRequest = PageRequest.of(0, 5);
         NoticeSearch noticeSearch = NoticeSearch.builder()
-                .size(10)
+                //.size(10)
                 .page(1)
                 .build();
 

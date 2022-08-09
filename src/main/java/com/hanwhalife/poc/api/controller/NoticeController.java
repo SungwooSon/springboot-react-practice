@@ -40,7 +40,7 @@ public class NoticeController {
      * @return
      */
     @GetMapping
-    public List<NoticeResponse> getNoticeList(@RequestParam(required = false) String keyword, @RequestParam NoticeSearch noticeSearch) {
+    public List<NoticeResponse> getNoticeList(@RequestParam(required = false) String keyword, @ModelAttribute NoticeSearch noticeSearch) {
 
         Specification<Notice> spec = (root, query, criteriaBuilder) -> null;
 
