@@ -48,7 +48,7 @@ public class NoticeController {
             spec = spec.and(NoticeSpecification.likeKeyword(keyword));
         }
 
-        return noticeService.getList(spec, noticeSearch);
+        return noticeService.getList(keyword, spec, noticeSearch);
     }
 
     @GetMapping("/{id}")
@@ -64,6 +64,7 @@ public class NoticeController {
     @DeleteMapping
     //public void delete(@PathVariable Long id) {
     public void delete(@RequestBody DeleteIds ids) {
+        //한방 쿼리로 리팩토링
         for (Long id : ids.getIds()) {
             noticeService.delete(id);
         }

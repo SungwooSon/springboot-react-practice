@@ -48,12 +48,12 @@ public class NoticeService {
     }
 
     @Transactional
-    public List<NoticeResponse> getList(Specification<Notice> spec, NoticeSearch noticeSearch) {
+    public List<NoticeResponse> getList(String keyword, Specification<Notice> spec, NoticeSearch noticeSearch) {
         /*return noticeRepository.findAll(spec).stream()
                 .map(NoticeResponse::new)
                 .collect(Collectors.toList());*/
 
-        return noticeRepository.getList(noticeSearch).stream()
+        return noticeRepository.getList(keyword, noticeSearch).stream()
                 .map(NoticeResponse::new)
                 .collect(Collectors.toList());
     }

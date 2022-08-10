@@ -1,11 +1,16 @@
 |===
-|Parameter|Optional|Description
+|Parameter|Optional|Constraint|Description|Default
 {{#parameters}}
 |{{#tableCellContent}}`+{{name}}+`{{/tableCellContent}}
 |{{#tableCellContent}}{{^optional}}true{{/optional}}{{#optional}}false{{/optional}}{{/tableCellContent}}
+|{{#tableCellContent}}{{#constraints}}{{.}}{{/constraints}}{{/tableCellContent}}
 |{{#tableCellContent}}{{description}}{{/tableCellContent}}
+|{{#tableCellContent}}{{#defaults}}{{.}}{{/defaults}}{{/tableCellContent}}
 {{/parameters}}
 |===
 
 //restdocs
 //라우팅 규칙을 잘 파싱해서 클라이언트에게 전달
+
+
+

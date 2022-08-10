@@ -73,9 +73,9 @@ public class NoticeServiceTest {
                 .build();
 
 
-        List<NoticeResponse> notices = noticeService.getList(null, noticeSearch);
+        List<NoticeResponse> notices = noticeService.getList(null, null, noticeSearch);
 
-        assertThat(notices.size()).isEqualTo(10);
+        assertThat(notices.size()).isEqualTo(20);
 
     }
 

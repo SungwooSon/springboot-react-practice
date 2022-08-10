@@ -13,10 +13,11 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedOrigins("*")
                 .allowedMethods(
                         HttpMethod.GET.name(),
-                        HttpMethod.HEAD.name(),
                         HttpMethod.POST.name(),
                         HttpMethod.PUT.name(),
+                        HttpMethod.PATCH.name(),
                         HttpMethod.DELETE.name(),
+                        HttpMethod.HEAD.name(),
                         HttpMethod.OPTIONS.name()
                 );
 //                .allowedOrigins("http://localhost:3000"

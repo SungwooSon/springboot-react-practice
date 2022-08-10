@@ -1,6 +1,11 @@
 package com.hanwhalife.poc.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hanwhalife.poc.api.domain.Notice;
+import com.hanwhalife.poc.api.domain.User;
+import com.hanwhalife.poc.api.repository.NoticeRepository;
+import com.hanwhalife.poc.api.repository.UserRepository;
+import com.hanwhalife.poc.api.request.DeleteIds;
 import com.hanwhalife.poc.api.request.NoticeCreate;
 import com.hanwhalife.poc.api.request.NoticeEdit;
 import org.junit.jupiter.api.DisplayName;
@@ -20,6 +25,13 @@ import org.springframework.restdocs.request.RequestDocumentation;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.snippet.Attributes.key;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -36,6 +48,12 @@ public class NoticeControllerDocTest {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private NoticeRepository noticeRepository;
 
     @Test
     @DisplayName("공지 작성")
@@ -61,7 +79,7 @@ public class NoticeControllerDocTest {
                         Preprocessors.preprocessResponse(Preprocessors.prettyPrint()),
                         PayloadDocumentation.requestFields(
                                 PayloadDocumentation.fieldWithPath("title").description("제목")
-                                        .attributes(key("constraint").value("'바보'가 포함 될 수 없음")),
+                                        .attributes(key("constraints").value("'바보'가 포함 될 수 없음")),
                                 PayloadDocumentation.fieldWithPath("content").description("내용"),
                                 PayloadDocumentation.fieldWithPath("userId").description("작성자 ID")
                         )
@@ -98,6 +116,17 @@ public class NoticeControllerDocTest {
     @DisplayName("공지 리스트 조회")
     void findAllNotice() throws Exception {
 
+        User user = userRepository.findById(1l).get();
+
+        List<Notice> requestNotices = IntStream.range(0, 3)
+                .mapToObj(i -> Notice.builder()
+                        .title("title"+i)
+                        .content("bar"+i)
+                        .writer(user)
+                        .registrationDate(LocalDateTime.now())
+                        .build())
+                .collect(Collectors.toList());
+        noticeRepository.saveAll(requestNotices);
 
         FieldDescriptor[] notices = new FieldDescriptor[] {
                 PayloadDocumentation.fieldWithPath("id").description("공지사항 ID"),
@@ -109,9 +138,8 @@ public class NoticeControllerDocTest {
 
         //String body = objectMapper.writeValueAsString(request);
         mockMvc.perform(
-                        RestDocumentationRequestBuilders.get("/api/notices?keyword=title")
+                        RestDocumentationRequestBuilders.get("/api/notices?keyword=title&page=1")
                                 .accept(MediaType.APPLICATION_JSON)
-
                 )
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(status().isOk())
@@ -119,7 +147,10 @@ public class NoticeControllerDocTest {
                         Preprocessors.preprocessRequest(Preprocessors.prettyPrint()),
                         Preprocessors.preprocessResponse(Preprocessors.prettyPrint()),
                         RequestDocumentation.requestParameters(
-                                RequestDocumentation.parameterWithName("keyword").description("공지사항 제목의 일부분").optional()
+                                RequestDocumentation.parameterWithName("keyword").description("공지사항 제목의 일부분").optional(),
+                                RequestDocumentation.parameterWithName("page").description("페이지"),
+                                RequestDocumentation.parameterWithName("size").description("페이지 당 조회건수").optional()
+                                        .attributes(key("defaults").value("20"))
                         ),
                         PayloadDocumentation.responseFields(
                                     PayloadDocumentation.fieldWithPath("[]").description("An array of notices")
@@ -165,18 +196,40 @@ public class NoticeControllerDocTest {
     @DisplayName("공지사항 삭제")
     void noticeDelete() throws Exception {
 
-        //String body = objectMapper.writeValueAsString(request);
+        User user = userRepository.findById(1l).get();
+
+        List<Notice> requestNotices = IntStream.range(0, 3)
+                .mapToObj(i -> Notice.builder()
+                        .title("foo"+i)
+                        .content("bar"+i)
+                        .writer(user)
+                        .registrationDate(LocalDateTime.now())
+                        .build())
+                .collect(Collectors.toList());
+        noticeRepository.saveAll(requestNotices);
+
+        List<Long> ids = new ArrayList<>();
+        for (Notice requestNotice : requestNotices) {
+            ids.add(requestNotice.getId());
+        }
+
+        DeleteIds request = new DeleteIds(ids);
+
+        String body = objectMapper.writeValueAsString(request);
         mockMvc.perform(
-                        RestDocumentationRequestBuilders.delete("/api/notices/{id}",2l)
+                        RestDocumentationRequestBuilders.delete("/api/notices")
+                                .contentType(MediaType.APPLICATION_JSON)
                                 .accept(MediaType.APPLICATION_JSON)
+                                .content(body)
                 )
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(status().isOk())
                 .andDo(document("notice-delete",
                         Preprocessors.preprocessRequest(Preprocessors.prettyPrint()),
                         Preprocessors.preprocessResponse(Preprocessors.prettyPrint()),
-                        RequestDocumentation.pathParameters(
-                                RequestDocumentation.parameterWithName("id").description("공지사항 ID")
+                        PayloadDocumentation.requestFields(
+                                PayloadDocumentation.fieldWithPath("ids").description("공지사항 ID")
+                                        .attributes(key("constraints").value("반드시 배열형태로 넘겨주어야 합니다"))
                         )
                 ));
     }

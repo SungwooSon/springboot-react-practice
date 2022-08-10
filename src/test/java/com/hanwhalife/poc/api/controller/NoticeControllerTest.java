@@ -5,6 +5,7 @@ import com.hanwhalife.poc.api.domain.Notice;
 import com.hanwhalife.poc.api.domain.User;
 import com.hanwhalife.poc.api.repository.NoticeRepository;
 import com.hanwhalife.poc.api.repository.UserRepository;
+import com.hanwhalife.poc.api.request.DeleteIds;
 import com.hanwhalife.poc.api.request.NoticeEdit;
 import com.hanwhalife.poc.api.service.NoticeService;
 import org.hamcrest.Matchers;
@@ -14,19 +15,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
+import org.springframework.restdocs.operation.preprocess.Preprocessors;
+import org.springframework.restdocs.payload.PayloadDocumentation;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.snippet.Attributes.key;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
 @SpringBootTest
@@ -103,9 +112,14 @@ public class NoticeControllerTest {
     @Test
     @DisplayName("게시글 삭제")
     void deleteNotice() throws Exception {
+        DeleteIds request = new DeleteIds(Arrays.asList(1l));
+        String body = objectMapper.writeValueAsString(request);
+
         mockMvc.perform(
-                delete("/api/notices/{noticeId}", 1l)
-                    .contentType(MediaType.APPLICATION_JSON)
+                delete("/api/notices")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(body)
                 )
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(print());

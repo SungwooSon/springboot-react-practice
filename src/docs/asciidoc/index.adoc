@@ -73,7 +73,7 @@ include::{snippets}/notice-edit/http-response.adoc[]
 //include::notice-delete.adoc[]
 ==== 요청
 include::{snippets}/notice-delete/http-request.adoc[]
-include::{snippets}/notice-delete/path-parameters.adoc[]
+include::{snippets}/notice-delete/request-fields.adoc[]
 
 ==== 응답
 include::{snippets}/notice-delete/http-response.adoc[]
