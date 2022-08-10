@@ -112,7 +112,17 @@ public class NoticeControllerTest {
     @Test
     @DisplayName("게시글 삭제")
     void deleteNotice() throws Exception {
-        DeleteIds request = new DeleteIds(Arrays.asList(1l));
+
+        Notice notice = Notice.builder()
+                .title("제목")
+                .content("내용")
+                .writer(userRepository.findById(1l).get())
+                .registrationDate(LocalDateTime.now())
+                .build();
+
+        noticeRepository.save(notice);
+
+        DeleteIds request = new DeleteIds(Arrays.asList(notice.getId()));
         String body = objectMapper.writeValueAsString(request);
 
         mockMvc.perform(

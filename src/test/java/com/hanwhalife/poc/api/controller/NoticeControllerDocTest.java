@@ -116,7 +116,8 @@ public class NoticeControllerDocTest {
     @DisplayName("공지 리스트 조회")
     void findAllNotice() throws Exception {
 
-        User user = userRepository.findById(1l).get();
+        List<User> users = userRepository.findAll();
+        User user = users.get(0);
 
         List<Notice> requestNotices = IntStream.range(0, 3)
                 .mapToObj(i -> Notice.builder()
@@ -196,7 +197,8 @@ public class NoticeControllerDocTest {
     @DisplayName("공지사항 삭제")
     void noticeDelete() throws Exception {
 
-        User user = userRepository.findById(1l).get();
+        List<User> users = userRepository.findAll();
+        User user = users.get(0);
 
         List<Notice> requestNotices = IntStream.range(0, 3)
                 .mapToObj(i -> Notice.builder()
