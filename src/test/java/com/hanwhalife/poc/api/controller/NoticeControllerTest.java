@@ -77,9 +77,9 @@ public class NoticeControllerTest {
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(jsonPath("$.length()", Matchers.is(20)))
-                .andExpect(jsonPath("$[0].title").value("foo29"))
-                .andExpect(jsonPath("$[0].content").value("bar29"))
+                .andExpect(jsonPath("$.content.length()", Matchers.is(20)))
+                .andExpect(jsonPath("$.content[0].title").value("foo29"))
+                .andExpect(jsonPath("$.content[0].content").value("bar29"))
                 .andDo(print());
     }
     @Test
@@ -103,9 +103,9 @@ public class NoticeControllerTest {
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(jsonPath("$.length()", Matchers.is(20)))
-                .andExpect(jsonPath("$[0].title").value("foo29"))
-                .andExpect(jsonPath("$[0].content").value("bar29"))
+                .andExpect(jsonPath("$.content.length()", Matchers.is(20)))
+                .andExpect(jsonPath("$.content.[0].title").value("foo29"))
+                .andExpect(jsonPath("$.content.[0].content").value("bar29"))
                 .andDo(print());
     }
 

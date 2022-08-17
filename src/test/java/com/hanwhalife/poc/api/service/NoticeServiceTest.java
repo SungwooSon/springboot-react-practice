@@ -6,11 +6,17 @@ import com.hanwhalife.poc.api.repository.NoticeRepository;
 import com.hanwhalife.poc.api.repository.UserRepository;
 import com.hanwhalife.poc.api.request.NoticeEdit;
 import com.hanwhalife.poc.api.request.NoticeSearch;
+import com.hanwhalife.poc.api.request.NoticeSearchCondition;
 import com.hanwhalife.poc.api.response.NoticeResponse;
+import com.hanwhalife.poc.api.response.NoticeResponseWithPagination;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -20,6 +26,7 @@ import java.util.stream.IntStream;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
+@Slf4j
 public class NoticeServiceTest {
 
     @Autowired
@@ -73,9 +80,45 @@ public class NoticeServiceTest {
                 .build();
 
 
-        List<NoticeResponse> notices = noticeService.getList(null, null, noticeSearch);
+        NoticeResponseWithPagination notices = noticeService.getList(noticeSearch);
 
-        assertThat(notices.size()).isEqualTo(20);
+
+        assertThat(notices.getContent().size()).isEqualTo(20);
+
+    }
+
+    @Test
+    @DisplayName("페이징 처리된 목록 조회 (querydsl + pageable)")
+    public void test3() {
+
+        List<User> users = userRepository.findAll();
+        User user = users.get(0);
+
+        List<Notice> requestNotices = IntStream.range(0, 30)
+                .mapToObj(i -> Notice.builder()
+                        .title("foo"+i)
+                        .content("bar"+i)
+                        .writer(user)
+                        .registrationDate(LocalDateTime.now())
+                        .build())
+                .collect(Collectors.toList());
+        noticeRepository.saveAll(requestNotices);
+
+        NoticeSearch noticeSearch = NoticeSearch.builder()
+                .page(1)
+                .size(5)
+                .build();
+
+        NoticeResponseWithPagination response = noticeService.getList(noticeSearch);
+
+
+
+        List<NoticeResponse> notices = response.getContent();
+
+        //log.info("response={}", response);
+
+        assertThat(notices.size()).isEqualTo(5);
+        assertThat(notices.get(0).getTitle()).isEqualTo("foo29");
 
     }
 

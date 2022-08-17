@@ -139,7 +139,7 @@ public class NoticeControllerDocTest {
 
         //String body = objectMapper.writeValueAsString(request);
         mockMvc.perform(
-                        RestDocumentationRequestBuilders.get("/api/notices?keyword=title&page=1")
+                        RestDocumentationRequestBuilders.get("/api/notices?keyword=title&page=1&size=5")
                                 .accept(MediaType.APPLICATION_JSON)
                 )
                 .andDo(MockMvcResultHandlers.print())
@@ -150,13 +150,16 @@ public class NoticeControllerDocTest {
                         RequestDocumentation.requestParameters(
                                 RequestDocumentation.parameterWithName("keyword").description("공지사항 제목의 일부분").optional(),
                                 RequestDocumentation.parameterWithName("page").description("페이지"),
-                                RequestDocumentation.parameterWithName("size").description("페이지 당 조회건수").optional()
-                                        .attributes(key("defaults").value("20"))
+                                RequestDocumentation.parameterWithName("size").description("페이지 당 조회건수")
                         ),
                         PayloadDocumentation.responseFields(
-                                    PayloadDocumentation.fieldWithPath("[]").description("An array of notices")
-                                )
-                                            .andWithPrefix("[].", notices)
+                                        //PayloadDocumentation.fieldWithPath("content").description(""),
+                                        //PayloadDocumentation.fieldWithPath("content.[]").description("An array of notices"),
+                                        //PayloadDocumentation.fieldWithPath("pagination").description("페이징 처리 정보"),
+                                        PayloadDocumentation.fieldWithPath("pagination.totalCount").description("전체 포스트 갯수"),
+                                        PayloadDocumentation.fieldWithPath("pagination.limit").description("현재 페이지에 보일 포스트 갯수"),
+                                        PayloadDocumentation.fieldWithPath("pagination.currentPage").description("현재 페이지")
+                                ).andWithPrefix("content.[]", notices)
                 ));
     }
 

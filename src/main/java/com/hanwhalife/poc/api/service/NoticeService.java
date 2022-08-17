@@ -9,11 +9,17 @@ import com.hanwhalife.poc.api.repository.UserRepository;
 import com.hanwhalife.poc.api.request.NoticeCreate;
 import com.hanwhalife.poc.api.request.NoticeEdit;
 import com.hanwhalife.poc.api.request.NoticeSearch;
+import com.hanwhalife.poc.api.request.NoticeSearchCondition;
 import com.hanwhalife.poc.api.response.NoticeResponse;
+import com.hanwhalife.poc.api.response.NoticeResponseWithPagination;
+import com.hanwhalife.poc.api.response.Pagination;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
@@ -48,14 +54,31 @@ public class NoticeService {
     }
 
     @Transactional
-    public List<NoticeResponse> getList(String keyword, Specification<Notice> spec, NoticeSearch noticeSearch) {
+    public NoticeResponseWithPagination getList(NoticeSearch noticeSearch) {
         /*return noticeRepository.findAll(spec).stream()
                 .map(NoticeResponse::new)
                 .collect(Collectors.toList());*/
 
-        return noticeRepository.getList(keyword, noticeSearch).stream()
+        List<NoticeResponse> content = noticeRepository.getList(noticeSearch).stream()
                 .map(NoticeResponse::new)
                 .collect(Collectors.toList());
+
+        int totalCount = noticeRepository.getCount();
+
+        Pagination pagination = Pagination.builder()
+                .totalCount(totalCount)
+                .currentPage(noticeSearch.getPage())
+                .limit(noticeSearch.getSize())
+                .build();
+
+        return NoticeResponseWithPagination.builder()
+                .content(content)
+                .pagination(pagination)
+                .build();
+    }
+    @Transactional
+    public Page<NoticeResponse> getListWithPageable(NoticeSearchCondition condition, Pageable pageable) {
+        return noticeRepository.searchPageSimple(condition, pageable);
     }
 
     public NoticeResponse save(NoticeCreate noticeCreate) {
