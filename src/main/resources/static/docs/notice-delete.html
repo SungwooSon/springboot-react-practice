@@ -444,26 +444,40 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h4 id="_요청">요청</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">DELETE /api/notices/2 HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">DELETE /api/notices HTTP/1.1
+Content-Type: application/json;charset=UTF-8
 Accept: application/json
-Host: 49.50.161.209:8080</code></pre>
+Content-Length: 28
+Host: 49.50.161.209:8080
+
+{
+  "ids" : [ 16, 17, 18 ]
+}</code></pre>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 1. /api/notices/{id}</caption>
 <colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
+<col style="width: 20%;">
 </colgroup>
 <thead>
 <tr>
-<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Field</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Optional</th>
+<th class="tableblock halign-left valign-top">Constraint</th>
 <th class="tableblock halign-left valign-top">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ids</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">true</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">반드시 배열형태로 넘겨주어야 합니다</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">공지사항 ID</p></td>
 </tr>
 </tbody>
@@ -484,7 +498,7 @@ Vary: Access-Control-Request-Headers</code></pre>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-08-08 09:31:19 +0900
+Last updated 2022-08-17 21:16:17 +0900
 </div>
 </div>
 </body>
