@@ -1,14 +1,10 @@
-ifndef::snippets[]
-:snippets: ./build/generated-snippets
-endif::[]
-
 // ascii doc 기본문법 참고
 = 한화생명 POC API
 :doctype: book
 :icons: font
 :source-highlighter: highlightjs
 :toc: left
-:toclevels: 2
+:toclevels: 4
 :sectlinks:
 
 
